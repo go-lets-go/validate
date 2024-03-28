@@ -13,8 +13,8 @@ const (
 
 	FIELD_MSG_GREATE_THEN = "Validation: Field '%s' failed greater than or equal = '%s'"
 	FIELD_MSG_LESS_THEN   = "Validation: Field '%s' failed less than or equal = '%s'"
-	FIELD_MSG_CHOOSE      = "Validation: Field '%s' failed when choosing between '%s'"
-	FIELD_MSG_EMAIL       = "Validation: Field '%s' is invalid"
+	//FIELD_MSG_CHOOSE      = "Validation: Field '%s' failed when choosing between '%s'"
+	FIELD_MSG_EMAIL = "Validation: Field '%s' is invalid"
 
 	PRE_MSG = "Validation:"
 )
@@ -48,7 +48,7 @@ func validatorLessEquals(fe validator.FieldError) string {
 }
 
 func validatorMax(fe validator.FieldError) string {
-	return fmt.Sprintf(FIELD_MSG_MIN, fe.Field(), fe.Tag(), fe.Param())
+	return fmt.Sprintf(FIELD_MSG_MAX, fe.Field(), fe.Tag(), fe.Param())
 }
 
 func validatorMin(fe validator.FieldError) string {
