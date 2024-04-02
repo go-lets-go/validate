@@ -1,7 +1,6 @@
 package validate
 
 import (
-	"fmt"
 	"github.com/go-playground/validator/v10"
 	"github.com/lest-go/validate/utils"
 	"time"
@@ -9,56 +8,75 @@ import (
 
 var validate *validator.Validate
 
-type errorResponse struct {
-	Timestamp time.Time         `json:"timestamp"`
-	Error     string            `json:"error"`
-	Fields    []fieldValidation `json:"validations"`
+type ValidateI interface {
+	ValidateAll(strt interface{}) (messageValidate Validation, err error)
 }
 
-type fieldValidation struct {
+type Service struct {
+}
+
+func NewValidate() ValidateI {
+	return &Service{}
+}
+
+type Validation struct {
+	Timestamp time.Time          `json:"timestamp"`
+	Error     string             `json:"error"`
+	Fields    []*FieldValidation `json:"validations"`
+}
+
+type FieldValidation struct {
 	Field   string `json:"field"`
 	Message string `json:"message"`
 }
 
-func (e *errorResponse) AppendField(fe validator.FieldError) {
-	message := utils.Error(fe)
-	e.Fields = append(e.Fields, fieldValidation{
-		Field:   fe.Field(),
-		Message: message,
-	})
-}
-
-func toJson(validationErrors validator.ValidationErrors) errorResponse {
-	errResp := errorResponse{
-		Timestamp: time.Now(),
-		Error:     "StatusBadRequest",
-	}
-
-	for _, fieldError := range validationErrors {
-		errResp.AppendField(fieldError)
-	}
-	return errResp
-}
-
-func validates(strc interface{}) (json errorResponse, err error) {
+func (s *Service) ValidateAll(strt interface{}) (messageValidate Validation, err error) {
 	validate = validator.New(validator.WithRequiredStructEnabled())
+
 	err = validate.RegisterValidation("cpf", cpfValidator)
+	err = validate.RegisterValidation("cnpj", validateCNPJ)
 	if err != nil {
-		return json, err
+		return buildMessageValidate(nil), err
 	}
 
-	err = validate.Struct(strc)
+	err = validate.Struct(strt)
 
 	if err != nil {
 		validationErrors, ok := err.(validator.ValidationErrors)
 		if ok {
-			for _, validationError := range validationErrors {
-				fmt.Println(validationError.Field(), validationError.Tag(), validationError.Param())
-			}
-			return toJson(validationErrors), nil
+			return buildMessageValidate(validationErrors), nil
 		} else {
-			return json, err
+			return buildMessageValidate(nil), err
 		}
 	}
-	return json, nil
+
+	return buildMessageValidate(nil), nil
+}
+
+func buildMessageValidate(validationErrors validator.ValidationErrors) Validation {
+	if validationErrors != nil {
+		errResp := Validation{
+			Timestamp: time.Now(),
+			Error:     "StatusBadRequest",
+			Fields:    make([]*FieldValidation, 0),
+		}
+
+		for _, fieldError := range validationErrors {
+			errResp.AppendField(fieldError)
+		}
+		return errResp
+	}
+
+	return Validation{
+		Fields: make([]*FieldValidation, 0),
+	}
+}
+
+func (v *Validation) AppendField(fe validator.FieldError) {
+	message := utils.Error(fe)
+
+	v.Fields = append(v.Fields, &FieldValidation{
+		Field:   fe.Field(),
+		Message: message,
+	})
 }
