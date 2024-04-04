@@ -2,14 +2,12 @@ package validate
 
 import (
 	"github.com/go-playground/validator/v10"
-	"github.com/lest-go/validate/utils"
-	"time"
 )
 
 var validate *validator.Validate
 
 type ValidateI interface {
-	ValidateAll(strt interface{}) (messageValidate Validation, err error)
+	ValidateAll(strt interface{}) (messageValidate []FieldValidation, err error)
 }
 
 type Service struct {
@@ -19,64 +17,38 @@ func NewValidate() ValidateI {
 	return &Service{}
 }
 
-type Validation struct {
-	Timestamp time.Time          `json:"timestamp"`
-	Error     string             `json:"error"`
-	Fields    []*FieldValidation `json:"validations"`
-}
-
-type FieldValidation struct {
-	Field   string `json:"field"`
-	Message string `json:"message"`
-}
-
-func (s *Service) ValidateAll(strt interface{}) (messageValidate Validation, err error) {
+func (s *Service) ValidateAll(strt interface{}) (messageValidate []FieldValidation, err error) {
 	validate = validator.New(validator.WithRequiredStructEnabled())
 
-	err = validate.RegisterValidation("cpf", cpfValidator)
+	err = validate.RegisterValidation("cpf", validateCPF)
 	err = validate.RegisterValidation("cnpj", validateCNPJ)
+	err = validate.RegisterValidation("blank", noBlankValidator)
 	if err != nil {
 		return buildMessageValidate(nil), err
 	}
 
-	err = validate.Struct(strt)
+	validation := validate.Struct(strt)
 
-	if err != nil {
-		validationErrors, ok := err.(validator.ValidationErrors)
+	if validation != nil {
+		validationErrors, ok := validation.(validator.ValidationErrors)
 		if ok {
-			return buildMessageValidate(validationErrors), nil
+			return buildMessageValidate(validationErrors), err
 		} else {
-			return buildMessageValidate(nil), err
+			return buildMessageValidate(validationErrors), err
 		}
 	}
 
 	return buildMessageValidate(nil), nil
 }
 
-func buildMessageValidate(validationErrors validator.ValidationErrors) Validation {
-	if validationErrors != nil {
-		errResp := Validation{
-			Timestamp: time.Now(),
-			Error:     "StatusBadRequest",
-			Fields:    make([]*FieldValidation, 0),
-		}
-
-		for _, fieldError := range validationErrors {
-			errResp.AppendField(fieldError)
-		}
-		return errResp
+func buildMessageValidate(validationErrors validator.ValidationErrors) []FieldValidation {
+	validationFields := make([]FieldValidation, 0)
+	builder := NewFieldValidationBuilder()
+	for _, fieldError := range validationErrors {
+		validationFields = append(validationFields, *builder.
+			Field(fieldError.Field()).
+			Message(MessageValidation(fieldError)).
+			Build())
 	}
-
-	return Validation{
-		Fields: make([]*FieldValidation, 0),
-	}
-}
-
-func (v *Validation) AppendField(fe validator.FieldError) {
-	message := utils.Error(fe)
-
-	v.Fields = append(v.Fields, &FieldValidation{
-		Field:   fe.Field(),
-		Message: message,
-	})
+	return validationFields
 }

@@ -40,7 +40,7 @@ func sumDigit(s string, table []int) int {
 	return sum
 }
 
-// RemoveSpecialCharacters removes non-numeric characters from a string.
+// RemoveSpecialCharacters remove special characters
 func RemoveSpecialCharacters(s string) string {
 	regex := regexp.MustCompile(`[^0-9]`)
 	return regex.ReplaceAllString(s, "")

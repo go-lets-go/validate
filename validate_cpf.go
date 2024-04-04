@@ -1,12 +1,12 @@
 package validate
 
 import (
+	"github.com/go-lets-go/validate/utils"
 	"github.com/go-playground/validator/v10"
-	"github.com/lest-go/validate/utils"
 )
 
-// cpfValidator validates a Brazilian CPF.
-func cpfValidator(fl validator.FieldLevel) bool {
+// validateCPF validates a Brazilian CPF.
+func validateCPF(fl validator.FieldLevel) bool {
 	cpf := fl.Field().String()
 	cpf = utils.RemoveSpecialCharacters(cpf)
 

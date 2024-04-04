@@ -1,4 +1,4 @@
-module github.com/lest-go/validate
+module github.com/go-lets-go/validate
 
 go 1.22.1
 

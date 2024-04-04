@@ -2,8 +2,8 @@ package validate
 
 import (
 	"fmt"
+	"github.com/go-lets-go/validate/utils"
 	"github.com/go-playground/validator/v10"
-	"github.com/lest-go/validate/utils"
 )
 
 // validateCNPJ validates a Brazilian CNPJ.
