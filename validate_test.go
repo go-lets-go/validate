@@ -213,6 +213,33 @@ func Test_validate(t *testing.T) {
 		}
 	})
 
+	t.Run("validate email without domain", func(t *testing.T) {
+		person := Person{
+			Name:   "Jamerson",
+			Age:    30,
+			Email:  "test@",
+			Gender: "male",
+			CPF:    "324.209.740-8",
+			Company: Company{
+				Name: "techcomp",
+				CNPJ: "41.756.914/0001-64",
+			},
+		}
+
+		results, err := NewValidate().ValidateAll(person)
+		expected := "Validation: Field 'Email' is invalid"
+		if err != nil {
+			t.Error("expected error, got nil")
+		} else {
+			for _, result := range results {
+				if result.Field == "Email" && result.Message == expected {
+					return
+				}
+			}
+			t.Errorf("expected error: %s, got: %v", expected, results)
+		}
+	})
+
 	//	expected := "Validation: Field 'CPF' is invalid"
 	//
 	//	for _, validation := range result.Fields {
