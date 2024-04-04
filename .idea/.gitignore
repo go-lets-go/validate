@@ -1,0 +1,39 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+
+# Arquivos compilados
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Arquivos de cache
+*.test
+*.prof
+
+# Diretório de construção
+bin/
+obj/
+vendor/
+
+# Arquivos de configuração do editor
+.vscode/
+
+# Arquivos de depuração
+.debug/
+
+# Arquivos de log e saída
+logs/
+*.log
+
+# Arquivos de metadados
+.idea/
+.DS_Store
+Thumbs.db
