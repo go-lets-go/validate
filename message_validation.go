@@ -3,17 +3,18 @@ package validate
 import (
 	"fmt"
 	"github.com/go-playground/validator/v10"
+	"strings"
 )
 
 const (
 	MESSAGE_REQUIRED = "Validation: Field '%s' is required"
 	MESSAGE_BLANK    = "Validation: Field '%s' failed is %s"
-
-	MESSAGE_EMAIL = "Validation: Field '%s' is invalid"
+	MESSAGE_EMAIL    = "Validation: Field '%s' is invalid"
 
 	MESSAGE_CPF_AND_CNPJ = "Validation: Field '%s' is invalid"
 
-	MESSAGE_MIM_MAX = "Validation: Field '%s' failed the %s length of %s characters" //ok
+	MESSAGE_MIM_MAX = "Validation: Field '%s' failed the %s length of %s characters"
+
 	//MESSAGE_CHOOSE      = "Validation: Field '%s' failed when choosing between '%s'"
 
 	MESSAGE_GREATE_THEN = "Validation: Field '%s' failed greater than or equal = '%s'"
@@ -70,7 +71,7 @@ func messageMinMax(fe validator.FieldError) string {
 }
 
 func messageCpfOrCnpj(fe validator.FieldError) string {
-	return fmt.Sprintf(MESSAGE_CPF_AND_CNPJ, fe.Field())
+	return fmt.Sprintf(MESSAGE_CPF_AND_CNPJ, strings.ToUpper(fe.Field()))
 }
 
 func messageDefault(fe validator.FieldError) string {
