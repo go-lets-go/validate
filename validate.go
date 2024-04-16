@@ -6,18 +6,18 @@ import (
 
 var validate *validator.Validate
 
-type ValidateI interface {
-	ValidateAll(strt interface{}) (messageValidate []FieldValidation, err error)
+type Validate interface {
+	Struct(strt interface{}) (messageValidate []FieldValidation, err error)
 }
 
 type Service struct {
 }
 
-func NewValidate() ValidateI {
+func NewValidate() Validate {
 	return &Service{}
 }
 
-func (s *Service) ValidateAll(strt interface{}) (messageValidate []FieldValidation, err error) {
+func (s *Service) Struct(strt interface{}) (messageValidate []FieldValidation, err error) {
 	validate = validator.New(validator.WithRequiredStructEnabled())
 
 	err = validate.RegisterValidation("cpf", validateCPF)
