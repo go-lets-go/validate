@@ -18,7 +18,7 @@ type Company struct {
 func Test_validate(t *testing.T) {
 	// INITIATE - FIELD NAME
 	t.Run("validate blank tag valid ( )", func(t *testing.T) {
-		results, err := NewValidate().ValidateAll(Person{Name: " "})
+		results, err := NewValidate().Struct(Person{Name: " "})
 		expected := "Validation: Field 'Name' failed is blank"
 		if err != nil {
 			t.Error("expected error, got nil")
@@ -33,7 +33,7 @@ func Test_validate(t *testing.T) {
 	})
 
 	t.Run("validate blank tag invalid '      '", func(t *testing.T) {
-		results, err := NewValidate().ValidateAll(Person{Name: "     "})
+		results, err := NewValidate().Struct(Person{Name: "     "})
 		expected := "Validation: Field 'Name' failed is blank"
 		if err != nil {
 			t.Error("expected error, got nil")
@@ -48,7 +48,7 @@ func Test_validate(t *testing.T) {
 	})
 
 	t.Run("validate blank tag valid (Jamerson)", func(t *testing.T) {
-		results, err := NewValidate().ValidateAll(Person{Name: "Jamerson"})
+		results, err := NewValidate().Struct(Person{Name: "Jamerson"})
 		expected := "Validation: Field 'Name' failed is blank"
 		if err != nil {
 			t.Error("expected error, got nil")
@@ -68,7 +68,7 @@ func Test_validate(t *testing.T) {
 
 	// INITIATE - CPF
 	t.Run("validate cpf tag invalid ()", func(t *testing.T) {
-		results, err := NewValidate().ValidateAll(Person{CPF: ""})
+		results, err := NewValidate().Struct(Person{CPF: ""})
 		expected := "Validation: Field 'CPF' is invalid"
 		if err != nil {
 			t.Error("expected error, got nil")
@@ -83,7 +83,7 @@ func Test_validate(t *testing.T) {
 	})
 
 	t.Run("validate cpf tag invalid (   .   .   -  )", func(t *testing.T) {
-		results, err := NewValidate().ValidateAll(Person{CPF: "   .   .   -  "})
+		results, err := NewValidate().Struct(Person{CPF: "   .   .   -  "})
 		expected := "Validation: Field 'CPF' is invalid"
 		if err != nil {
 			t.Error("expected error, got nil")
@@ -98,7 +98,7 @@ func Test_validate(t *testing.T) {
 	})
 
 	t.Run("validate cpf tag invalid (324.209.740-)", func(t *testing.T) {
-		results, err := NewValidate().ValidateAll(Person{CPF: "324.209.740-"})
+		results, err := NewValidate().Struct(Person{CPF: "324.209.740-"})
 		expected := "Validation: Field 'CPF' is invalid"
 		if err != nil {
 			t.Error("expected error, got nil")
@@ -113,7 +113,7 @@ func Test_validate(t *testing.T) {
 	})
 
 	t.Run("validate cpf tag invalid (324.209.740-96)", func(t *testing.T) {
-		results, err := NewValidate().ValidateAll(Person{CPF: "324.209.740-96"})
+		results, err := NewValidate().Struct(Person{CPF: "324.209.740-96"})
 		expected := "Validation: Field 'CPF' is invalid"
 		if err != nil {
 			t.Error("expected error, got nil")
@@ -128,7 +128,7 @@ func Test_validate(t *testing.T) {
 	})
 
 	t.Run("validate cpf tag invalid (aaa.bbb.ccc-dd)", func(t *testing.T) {
-		results, err := NewValidate().ValidateAll(Person{CPF: "aaa.bbb.ccc-dd"})
+		results, err := NewValidate().Struct(Person{CPF: "aaa.bbb.ccc-dd"})
 		expected := "Validation: Field 'CPF' is invalid"
 		if err != nil {
 			t.Error("expected error, got nil")
@@ -143,7 +143,7 @@ func Test_validate(t *testing.T) {
 	})
 
 	t.Run("validate cpf tag success (324.209.740-85)", func(t *testing.T) {
-		results, err := NewValidate().ValidateAll(Person{CPF: "324.209.740-85"})
+		results, err := NewValidate().Struct(Person{CPF: "324.209.740-85"})
 		expected := "Validation: Field 'CPF' is invalid"
 		if err != nil {
 			t.Error("expected error, got nil")
@@ -163,7 +163,7 @@ func Test_validate(t *testing.T) {
 
 	// INITIATE - CNPJ
 	t.Run("validate cnpj tag invalid ()", func(t *testing.T) {
-		results, err := NewValidate().ValidateAll(Company{CNPJ: ""})
+		results, err := NewValidate().Struct(Company{CNPJ: ""})
 		expected := "Validation: Field 'CNPJ' is invalid"
 		if err != nil {
 			t.Error("expected error, got nil")
@@ -178,7 +178,7 @@ func Test_validate(t *testing.T) {
 	})
 
 	t.Run("validate cnpj tag invalid (  .   .   /    -  )", func(t *testing.T) {
-		results, err := NewValidate().ValidateAll(Company{CNPJ: "  .   .   /    -  "})
+		results, err := NewValidate().Struct(Company{CNPJ: "  .   .   /    -  "})
 		expected := "Validation: Field 'CNPJ' is invalid"
 		if err != nil {
 			t.Error("expected error, got nil")
@@ -193,7 +193,7 @@ func Test_validate(t *testing.T) {
 	})
 
 	t.Run("validate cnpj tag invalid (41.756.914/0001-)", func(t *testing.T) {
-		results, err := NewValidate().ValidateAll(Company{CNPJ: "41.756.914/0001-"})
+		results, err := NewValidate().Struct(Company{CNPJ: "41.756.914/0001-"})
 		expected := "Validation: Field 'CNPJ' is invalid"
 		if err != nil {
 			t.Error("expected error, got nil")
@@ -208,7 +208,7 @@ func Test_validate(t *testing.T) {
 	})
 
 	t.Run("validate cnpj tag invalid (41.746.914/0001-01)", func(t *testing.T) {
-		results, err := NewValidate().ValidateAll(Company{CNPJ: "41.746.914/0001-01"})
+		results, err := NewValidate().Struct(Company{CNPJ: "41.746.914/0001-01"})
 		expected := "Validation: Field 'CNPJ' is invalid"
 		if err != nil {
 			t.Error("expected error, got nil")
@@ -223,7 +223,7 @@ func Test_validate(t *testing.T) {
 	})
 
 	t.Run("validate cnpj tag invalid (aa.bbb.ccc/dddd-ee)", func(t *testing.T) {
-		results, err := NewValidate().ValidateAll(Company{CNPJ: "aa.bbb.ccc/dddd-ee"})
+		results, err := NewValidate().Struct(Company{CNPJ: "aa.bbb.ccc/dddd-ee"})
 		expected := "Validation: Field 'CNPJ' is invalid"
 		if err != nil {
 			t.Error("expected error, got nil")
@@ -238,7 +238,7 @@ func Test_validate(t *testing.T) {
 	})
 
 	t.Run("validate cnpj tag success (41.756.914/0001-64)", func(t *testing.T) {
-		results, err := NewValidate().ValidateAll(Company{CNPJ: "41.756.914/0001-64"})
+		results, err := NewValidate().Struct(Company{CNPJ: "41.756.914/0001-64"})
 		expected := "Validation: Field 'CNPJ' is invalid"
 		if err != nil {
 			t.Error("expected error, got nil")
