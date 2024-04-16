@@ -13,9 +13,9 @@ strings em branco, mas também amplia as funcionalidades do pacote `go-playgroun
 | cnpj  | Valida se o campo é um CNPJ válido. |
 | blank | Verifica se o campo está em branco. |
 
-Veja a documentação completa com todas as tags disponível em [https://github.com/go-playground/validator](https://github.com/go-playground/validator/blob/master/README.md)
+Veja a documentação completa com todas as tags disponíveis em [https://github.com/go-playground/validator](https://github.com/go-playground/validator/blob/master/README.md)
 ## Instalação
-Para obter:
+
 ```bash
 go get github.com/go-lets-go/validate@v1.0.1
 go mod tidy
