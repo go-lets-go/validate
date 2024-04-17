@@ -30,8 +30,8 @@ validator := validate.NewValidate()
 validations, err := validator.Struct(person)
 ```
 
-## Implementação:
-- [Exemplo API]()
+## Exemplo:
+- [API](https://medium.com/@jamersom/exemplo-de-valida%C3%A7%C3%A3o-com-go-lets-go-validate-85f9816ffa60)
 
 ## Referência
 
